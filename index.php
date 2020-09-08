@@ -5,14 +5,14 @@ $start = microtime(1);
 include_once 'lib/curl.php';
 include_once 'lib/simple_html_dom.php';
 
-$pizza = curl::app('https://ntschool.ru')
+$course = curl::app('https://ntschool.ru')
     ->set(CURLOPT_HEADER, 1)
     ->set(CURLOPT_REFERER, 'https://www.google.ru')
     ->set(CURLOPT_TIMEOUT, 15)
     ->set(CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:80.0) Gecko/20100101 Firefox/80.0");
 
 
-$html = $pizza->request('kursyi');
+$html = $course->request('kursyi');
 $dom = str_get_html($html);
 $content = $dom->find('.courses-list--item-body');
 
@@ -38,9 +38,34 @@ foreach ($content as $el) {
     $arr_price[$i] = $price;
     $i++;
 }
+?>
 
-for ($i = 0; $i < count($arr_a); $i++) {
-    echo '<p>' . $arr_a[$i] . ' ' . $arr_price[$i] .'</p>';
-}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="wrap">
+        <div class="content">
+        <?php
+            for ($i = 0; $i < count($arr_a); $i++) { ?>
+                <div class="container">
+                    <div class="link"><?php echo $arr_a[$i] ?></div>
+                    <div class="price"><?php echo $arr_price[$i] ?></div>
+                </div>
+            <?php }
+        //echo microtime(1) - $start;
+        ?>
+        </div>
+    </div>
+</body>
+</html>
 
-echo microtime(1) - $start;
+
+
